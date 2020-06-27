@@ -28,28 +28,30 @@ export default function App() {
 
   async function handleLikeRepository(id) {
     // adiciona um curtir no item escolhido
-    const response = await api.post(`/repositories/${id}/like`)
-    const targetLike = response.data; //curtir
+    const response = await api.post(`repositories/${id}/like`)
+    const likedRepository = response.data; //curtir
 
-    const repositoryUpdate = repositories.map(repository => {
+    const repositoriesUpdate = repositories.map(repository => {
         if(repository.id == id){
-          return targetLike;
+          return likedRepository;
         } else {
           return repository;
         }
       });
-    setRepositories(repositoryUpdate);
-}
+      setRepositories(repositoriesUpdate);
+    }
 
-return (
-  <>
-    <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
-    <SafeAreaView style={styles.container}>
+    return (
+      <>
+      <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
+      <SafeAreaView style={styles.container}>
       
-      <FlatList 
-          data={repositories}
-          keyExtractor={repository => repository.id}
-          renderItem={({ item: repository }) => (
+        <FlatList 
+          data={repositories} //nossos repositórios
+          keyExtractor={repository => repository.id} //função que recebe o repositório e retorna o id
+          
+          //No renderItem ficará todo o conteúdo a ser mostrado
+          renderItem={({ item: repository }) => ( //o item repository irá retornar o conteúdo
 
             <View style={styles.repositoryContainer}>
               <Text style={styles.repository}>{repository.title}</Text>
@@ -78,6 +80,7 @@ return (
             </View>
         )}
       />
+
     </SafeAreaView>
   </>
 );
